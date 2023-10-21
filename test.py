@@ -8,3 +8,15 @@ def test_game_score():
     gameController.player_2 = player_2
     assert gameController.get_player_score(player_1) == 0
     assert gameController.get_player_score(player_2) == 0
+
+    gameController.game_wins = [player_1]
+    assert gameController.get_player_score(player_1) == 1
+    assert gameController.get_player_score(player_2) == 0
+
+    gameController.game_wins = [player_2, player_2]
+    assert gameController.get_player_score(player_1) == 0
+    assert gameController.get_player_score(player_2) == 2
+
+
+
+
