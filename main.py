@@ -30,16 +30,19 @@ class GameController:
     def __init__(self):
         self.board = Board()
         self.mode = 'PVP'
+    
+    def turn_on_game(self):
+        pass
 
     def choose_mode(self):
+        name_1 = input("Please enter your name: ")
         choice = int(input("""              Let the games begin... \n\n To continue, choose from the following game modes:\n
               Player vs Player (1) \n
               Player vs Uncle (2) \n
               Player vs Chucky (3) \n\n"""))
         if choice == 1:
             self.mode = 'PVP'
-            self.start_game()
-            return
+            return self.start_game()
         elif choice == 2:
             pass
         
@@ -50,7 +53,6 @@ class GameController:
     
 
     def start_game(self): 
-        self.choose_mode()
         if self.mode == 'PVP':
             return self.pvp()
         
@@ -91,7 +93,7 @@ class GameController:
 
 game = GameController()
 
-game.start_game()
+game.choose_mode()
 
 
 
