@@ -3,7 +3,8 @@ class Board:
         self.box = self.create_box()
 
     def create_box(self): #creates new array for multiple games
-        return  [" ", " ", " ", " ", " ", " ", " ", " ", " "]
+        # return  [" ", " ", " ", " ", " ", " ", " ", " ", " "] 
+        return [" ", "O", "X", "O", "O", "X", "X", "X", "O"]
     
     def restart_board(self): 
         self.box = self.create_box()
@@ -28,3 +29,7 @@ class Board:
             if self.box[win[0]] == self.box[win[1]] == self.box[win[2]] == player:
                 return True
         return False
+    
+    def tie_game(self):
+        return " " not in self.box
+

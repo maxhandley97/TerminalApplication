@@ -1,7 +1,9 @@
 import pytest
 from game_controller import GameController
+from game_board import Board
 def test_game_score():
     gameController = GameController()
+    gameBoard = Board()
     player_1 = "max"
     player_2 = "kito"
     gameController.player_1 = player_1
@@ -16,6 +18,14 @@ def test_game_score():
     gameController.game_wins = [player_2, player_2]
     assert gameController.get_player_score(player_1) == 0
     assert gameController.get_player_score(player_2) == 2
+
+    gameBoard.box = ["X", "O", "X", "O", "O", "X", "X", "X", "O"]
+    assert gameBoard.tie_game() == True
+    gameBoard.box = [" ", " ", " ", " ", " ", " ", " ", " ", " "]
+    assert gameBoard.tie_game() == False
+
+
+
 
 
 
