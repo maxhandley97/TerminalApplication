@@ -3,8 +3,8 @@ class Board:
         self.box = self.create_box()
 
     def create_box(self): #creates new array for multiple games
-        # return  [" ", " ", " ", " ", " ", " ", " ", " ", " "] 
-        return [" ", "O", "X", "O", "O", "X", "X", "X", "O"]
+        return  [" ", " ", " ", " ", " ", " ", " ", " ", " "] 
+        # return [" ", "O", "X", "O", "O", "X", "X", "X", "O"]
     
     def restart_board(self): 
         self.box = self.create_box()

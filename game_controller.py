@@ -25,7 +25,8 @@ class GameController:
         if choice == 1:
             self.mode = 'PVP'
             os.system("clear")
-            self.player_2 = input("Please enter player 2's name: ")
+            print("You have selected Player Vs Player \n")
+            self.player_2 = input("Please enter your challengers name: \n")
             return self.start_game()
         elif choice == 2:
             pass
@@ -83,7 +84,6 @@ class GameController:
         prompt_count = 0
         while is_valid == False:
             self.refresh_gamescreen()
-            print(prompt_count)
             if prompt_count == 1:
                 print(f"C'mon {current_player}, wrong move")
             elif prompt_count == 2:
@@ -91,16 +91,14 @@ class GameController:
             elif prompt_count == 3:
                 print(f"OK {current_player}, Last chance or you're opponent gets another crack")
             elif prompt_count >= 4:
-                os.system("clear")
-                print('Well you done fucked up boy!')
-                time.sleep(1)
-                os.system("clear")
-                print('Well you done fucked up boy!.')
-                time.sleep(1)
-                os.system("clear")
-                print('Well you done fucked up boy!..')
-                time.sleep(1)
+                countdown = 0
+                while countdown < 4:
+                    os.system("clear")
+                    print(f"You had three chances, you're sleeping on me!{'.' * countdown}")
+                    time.sleep(.5)
+                    countdown += 1
                 return
+            
             marker = "X" if current_player == self.player_1  else "O"
             placement = input(f"\n {current_player} it's your turn, please choose 1-9: ")
             is_valid = placement.isdigit() and (int(placement) >= 1 and int(placement) <= 9) and self.board.box[int(placement) - 1] == " "
