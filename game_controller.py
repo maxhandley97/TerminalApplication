@@ -1,35 +1,36 @@
 import os
 from game_board import Board
+from drunk_uncle import DrunkUncle
 import time
 
 class GameController:
     def __init__(self):
         self.board = Board()
-        self.mode = 'PVP'
+        self.drunk_uncle = DrunkUncle()
         self.player_1 = ""
         self.player_2 = ""
         self.game_wins = []
     
     def turn_on_game(self):
-        pass
-            
-
-    def choose_mode(self):
         if self.player_1 ==  "":
             self.player_1 = input("Please enter your name: ")
             os.system("clear")
+        return self.choose_mode() 
+        
+            
+
+    def choose_mode(self):
         choice = self.get_number(input(f"""        Greetings """ + (self.player_1) + """, let the games begin... \n\n To continue, choose from the following game modes:\n
               Player vs Player (1) \n
               Player vs Drunk Uncle (2) \n
               Player vs Chucky (3) \n\n""").strip())
         if choice == 1:
-            self.mode = 'PVP'
             os.system("clear")
             print("You have selected Player Vs Player \n")
             self.player_2 = input("Please enter your challengers name: \n")
-            return self.start_game()
+            return self.pvp()
         elif choice == 2:
-            pass
+            return self.drunk_uncle.drunk_mode()
         else:
             os.system("clear")
             print("     The previous answer was an incorrect choice \n\n")
@@ -63,11 +64,7 @@ class GameController:
             return self.initiate_and_validate_player_turn(self.player_2)
         else:
             pass
-            
-
-    def start_game(self): 
-        if self.mode == 'PVP':
-            return self.pvp()
+                
         
 
     def get_player_score(self, player):
@@ -134,7 +131,7 @@ class GameController:
                     self.alternate_player()
                     continue
                 else:
-                    break
+                    return self.choose_mode()
 
             if self.board.tie_game():
                 self.on_tie_game()
@@ -152,7 +149,7 @@ class GameController:
                     self.alternate_player()
                     continue
                 else:
-                    break
+                    return self.choose_mode()
 
             if self.board.tie_game():
                 print ("\nTie game\n")
