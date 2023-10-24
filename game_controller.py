@@ -42,13 +42,7 @@ class GameController:
             self.choose_mode()
             
 
-    def get_number(self, message):
-            number = None
-            try:
-                number = int(message)
-            except ValueError:
-                print("You need to enter a number")
-            return number
+   
 
     def rematch(self):
         self.board.restart_board()
@@ -139,10 +133,10 @@ class GameController:
             return self.choose_mode()
 
     def pvp(self):
-        players = [self.player_2, self.player_1] if self.games_played % 2 else [self.player_1, self.player_2]
+        ordered_players = [self.player_2, self.player_1] if self.games_played % 2 else [self.player_1, self.player_2]
         # check for player 1 win
         while True: 
-            for player in players:
+            for player in ordered_players:
                 players_wins = self.initiate_and_validate_player_turn(player)
                 if players_wins: 
                     self.on_player_win(player)
@@ -150,6 +144,12 @@ class GameController:
                 if self.board.tie_game():
                     self.on_tie_game()
    
-
+ # def get_number(self, message):
+    #         number = None
+    #         try:
+    #             number = int(message)
+    #         except ValueError:
+    #             print("You need to enter a number")
+    #         return number
 
            
