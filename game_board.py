@@ -1,3 +1,4 @@
+from colort import colorize, ForegroundColor as fc, Style
 class Board:
     def __init__(self):
         self.box = self.create_box()
@@ -5,16 +6,18 @@ class Board:
     def create_box(self): #creates new array for multiple games
         return  [" ", " ", " ", " ", " ", " ", " ", " ", " "] 
         # return [" ", "O", "X", "O", "O", "X", "X", "X", "O"]
+        # return ["X", "X", " ", "O", "O", " ", " ", " ", " "]
     
     def restart_board(self): 
         self.box = self.create_box()
 
     def gameboard(self):
-        print(" " + self.box[0] + " | " + self.box[1] + " | " + self.box[2])
-        print("-----------")
-        print(" " + self.box[3] + " | " + self.box[4] + " | " + self.box[5])
-        print("-----------")
-        print(" " + self.box[6] + " | " + self.box[7] + " | " + self.box[8] + "\n")
+        gameboard = (" " + self.box[0] + " | " + self.box[1] + " | " + self.box[2] + "\n"
+        "-----------\n"
+        " " + self.box[3] + " | " + self.box[4] + " | " + self.box[5] + "\n"
+        "-----------\n"
+        " " + self.box[6] + " | " + self.box[7] + " | " + self.box[8] + "\n")
+        print(gameboard)
     
     def update_boxes(self, box_number, player):
         if self.box[box_number] == " ":

@@ -1,25 +1,28 @@
 import os
 from game_board import Board
-from drunk_uncle import DrunkUncle
+# from bots import Bot
 import time
 
 class GameController:
     def __init__(self):
         self.board = Board()
-        self.drunk_uncle = DrunkUncle()
+        # self.drunk_uncle = Bot(self)
         self.player_1 = ""
         self.player_2 = ""
         self.game_wins = []
+        self.mode = ""
+        self.games_played = 0
     
     def turn_on_game(self):
         if self.player_1 ==  "":
-            self.player_1 = input("Please enter your name: ")
             os.system("clear")
+            self.player_1 = input("Please enter your name: ")
         return self.choose_mode() 
         
             
 
     def choose_mode(self):
+        os.system("clear")
         choice = self.get_number(input(f"""        Greetings """ + (self.player_1) + """, let the games begin... \n\n To continue, choose from the following game modes:\n
               Player vs Player (1) \n
               Player vs Drunk Uncle (2) \n
@@ -28,8 +31,10 @@ class GameController:
             os.system("clear")
             print("You have selected Player Vs Player \n")
             self.player_2 = input("Please enter your challengers name: \n")
+            self.mode = "Player vs Player"
             return self.pvp()
         elif choice == 2:
+            self.mode = "Drunk Uncle"
             return self.drunk_uncle.drunk_mode()
         else:
             os.system("clear")
@@ -48,32 +53,35 @@ class GameController:
     def rematch(self):
         self.board.restart_board()
         self.refresh_gamescreen()
+        
 
 
     def refresh_gamescreen(self):
         os.system("clear")
         self.print_title()
+        self.print_scoreboard()
         self.board.gameboard()
-        if len(self.game_wins) % 2:
-            print(f"{self.player_2} you go first")
-        else:
-            pass
+        
     
     def alternate_player(self):
         if len(self.game_wins) % 2:
             return self.initiate_and_validate_player_turn(self.player_2)
         else:
             pass
-                
-        
+
 
     def get_player_score(self, player):
         return len(list(filter(lambda player_win: player_win == player, self.game_wins)))
+    
+    
 
     def print_title(self):
-        print(f"   {self.mode} \n\nNaughts and Crosses\n")
+        print(f"  {self.mode}  \n\nNaughts and Crosses\n")
+        
+    def print_scoreboard(self):
         if len(self.game_wins) > 0:
             print(f" {self.player_1}: {self.get_player_score(self.player_1)}  VS {self.player_2}: {self.get_player_score(self.player_2)} \n\n")
+    
 
     def initiate_and_validate_player_turn(self, current_player):
         is_valid = False
@@ -106,55 +114,42 @@ class GameController:
         current_player_wins = self.board.win_game(marker)
         if current_player_wins:
             self.game_wins.append(current_player)
+        else:
+            pass
 
         return current_player_wins
     
     def on_tie_game(self): 
         self.refresh_gamescreen()
         print ("\nTie game\n")
-        return input("Would you like to play again? (Y/N): ").lower()
+        self.on_game_finished()
 
     def on_player_win(self, winning_player): 
         self.refresh_gamescreen()
         print(f"{winning_player} wins!\n")
-        return input("Would you like to play again? (Y/N): ").lower()
+        self.on_game_finished()
+
+
+    def on_game_finished(self):
+        self.games_played += 1
+        rematch = input("Would you like to play again? (Y/N): ").lower()
+        if rematch == "y":
+            self.rematch()
+        else:
+            return self.choose_mode()
 
     def pvp(self):
+        players = [self.player_2, self.player_1] if self.games_played % 2 else [self.player_1, self.player_2]
         # check for player 1 win
         while True: 
-            player_1_wins = self.initiate_and_validate_player_turn(self.player_1)
+            for player in players:
+                players_wins = self.initiate_and_validate_player_turn(player)
+                if players_wins: 
+                    self.on_player_win(player)
 
-            if player_1_wins: 
-                rematch = self.on_player_win(self.player_1)
-                if rematch == "y":
-                    self.rematch()
-                    self.alternate_player()
-                    continue
-                else:
-                    return self.choose_mode()
-
-            if self.board.tie_game():
-                self.on_tie_game()
-                self.rematch()
-                break
-
-        #check for player two win
-  
-            player_2_wins =  self.initiate_and_validate_player_turn(self.player_2)
-
-            if player_2_wins: 
-                rematch = self.on_player_win(self.player_2)
-                if rematch == "y":
-                    self.rematch()
-                    self.alternate_player()
-                    continue
-                else:
-                    return self.choose_mode()
-
-            if self.board.tie_game():
-                print ("\nTie game\n")
-                break
-                
+                if self.board.tie_game():
+                    self.on_tie_game()
+   
 
 
            
