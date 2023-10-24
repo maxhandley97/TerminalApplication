@@ -7,6 +7,10 @@ class Board:
         return  [" ", " ", " ", " ", " ", " ", " ", " ", " "] 
         # return [" ", "O", "X", "O", "O", "X", "X", "X", "O"]
         # return ["X", "X", " ", "O", "O", " ", " ", " ", " "]
+
+    def is_valid_placement(self, placement):
+        return placement.isdigit() and (int(placement) >= 1 and int(placement) <= 9) and self.box[int(placement) - 1] == " "
+
     
     def restart_board(self): 
         self.box = self.create_box()
@@ -17,7 +21,7 @@ class Board:
         " " + self.box[3] + " | " + self.box[4] + " | " + self.box[5] + "\n"
         "-----------\n"
         " " + self.box[6] + " | " + self.box[7] + " | " + self.box[8] + "\n")
-        print(gameboard)
+        print(colorize(gameboard, fc.BLUE, Style.BOLD))
     
     def update_boxes(self, box_number, player):
         if self.box[box_number] == " ":
