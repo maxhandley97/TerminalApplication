@@ -3,7 +3,7 @@ from game_board import Board
 from bots import Bot
 import time
 import random
-
+from colort import colorize, ForegroundColor as fc, Style
 class GameController:
     def __init__(self):
         self.board = Board()
@@ -20,7 +20,6 @@ class GameController:
             os.system("clear")
             self.player_1 = input("Please enter your name: ")
         return self.choose_mode() 
-        
             
 
     def choose_mode(self):
@@ -34,19 +33,26 @@ class GameController:
             print("You have selected Player Vs Player \n")
             self.player_2 = input("Please enter your challengers name: \n")
             self.mode = "Player vs Player"
+            self.versus_bot = False
             return self.pvp()
+        
         elif choice == 2:
-            self.mode = "Drunk Uncle"
+            self.mode = "Player vs Drunk Uncle"
             self.player_2 = "Drunk Uncle"
             self.versus_bot = True
-
             return self.pvp()
-            # return self.drunk_uncle.drunk_mode()
+        
+        elif choice == 3:
+            self.mode = "Player vs Chucky"
+            self.player_2 = "Chucky"
+            self.versus_bot = True
+            return self.pvp()
         else:
             os.system("clear")
             print("     The previous answer was an incorrect choice \n\n")
             self.choose_mode()
-            
+    
+  
 
     def get_number(self, message):
             number = None
@@ -71,7 +77,7 @@ class GameController:
         
     
     def alternate_player(self):
-        if len(self.game_wins) % 2:
+        if len(self.games_played) % 2:
             return self.initiate_and_validate_player_turn(self.player_2)
         else:
             pass
@@ -94,6 +100,10 @@ class GameController:
         is_valid = False
         placement = None
         prompt_count = 0
+        if self.games_played > 0 and self.board.box == [" ", " ", " ", " ", " ", " ", " ", " ", " "]:
+            os.system("clear")
+            print(f"{current_player} you go first this round")
+            time.sleep(2)
         while is_valid == False:
             self.refresh_gamescreen()
             if prompt_count == 1:
@@ -110,7 +120,6 @@ class GameController:
                     time.sleep(.5)
                     countdown += 1
                 return
-            
             marker = "X" if current_player == self.player_1  else "O"
             placement = input(f"\n {current_player} it's your turn, please choose 1-9: ")
             is_valid = self.board.is_valid_placement(placement)
@@ -137,9 +146,8 @@ class GameController:
             print("\n" + chatter[random.randint(0, (len(chatter) - 1))])
             if self.player_2 == 'Drunk Uncle':
                 time.sleep(random.randint(1, 3))
-            elif self.player== 'Chucky':
-                time.sleep(1.5)
-
+            elif self.player_2 == 'Chucky':
+                time.sleep(2)
 
 
     def initiate_and_validate_bot_turn(self): 
@@ -155,7 +163,8 @@ class GameController:
 
             # ...do drunk uncle turn code in differenbt method for clean code
         elif self.player_2 == 'Chucky':
-
+            chatter = ["Mwahahaha",  "It might be Game Over for you", "*cackles*", "*starts sharpenening your kitchen knife that went missing*", "*throws tomohawk and closely misses onlooker*"]
+            self.bot_talk(chatter)
             while True:
                 bot_placement = random.randint(1,9)
                 if self.board.is_valid_placement(str(bot_placement)):
@@ -181,7 +190,11 @@ class GameController:
         rematch = input("Would you like to play again? (Y/N): ").lower()
         if rematch == "y":
             self.rematch()
+            
         else:
+            self.game_wins = []
+            self.games_played = 0
+            self.rematch()
             return self.choose_mode()
 
     def pvp(self):
