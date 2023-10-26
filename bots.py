@@ -4,7 +4,7 @@ import os
 class Bot:
     def __init__(self, parent):
         self.parent = parent
-        self.player_1 = player_1()
+        self.player_1 = player_1
 
         
     def initiate_and_validate_bot_player(self, current_player):

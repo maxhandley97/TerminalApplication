@@ -139,7 +139,7 @@ class GameController:
         return current_player_wins
     
     def bot_talk(self, chatter):
-        chatter_count = random.randint(1, 3)
+        chatter_count = random.randint(1, 2)
         while chatter_count != 0:
             chatter_count -= 1
             self.refresh_gamescreen()
