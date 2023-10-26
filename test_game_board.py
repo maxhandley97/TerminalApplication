@@ -15,8 +15,6 @@ def test_update_boxes():
     gameBoard.update_boxes(1, player_2)
     assert gameBoard.box == ["X", "O", " ", " ", " ", " ", " ", " ", " "]
 
-
-
 def test_tie_game():
     gameBoard.box = ["X", "O", "X", "O", "O", "X", "X", "X", "O"]
     assert gameBoard.tie_game() == True
@@ -30,5 +28,4 @@ def test_win_game():
     assert gameBoard.win_game(player_1) == True
     gameBoard.box = ["X", "O", "X", "O", "O", "X", "X", "X", "O"]
     assert gameBoard.win_game(player_1) == False
-
 

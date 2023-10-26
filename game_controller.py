@@ -20,33 +20,34 @@ class GameController:
     def turn_on_game(self):
         if self.player_1 ==  "":
             os.system("clear")
-            color = input("Please enter your name: ")
+            color = input(colored("Please enter your name: ", "grey", attrs=["bold"]))
             self.player_1 = colored(color, "red", attrs=["bold"])
         return self.choose_mode() 
             
 
     def choose_mode(self):
         os.system("clear")
-        choice = self.get_number(input(f"""        Greetings """ + (self.player_1) + """, let the games begin... \n\n To continue, choose from the following game modes:\n
+        choice = self.get_number(input(colored("""        Greetings """, "grey", attrs=["bold"]) + (self.player_1) + colored(""", let the games begin... \n\n To continue, choose from the following game modes:\n
               Player vs Player (1) \n
               Player vs Drunk Uncle (2) \n
-              Player vs Chucky (3) \n\n""").strip())
+              Player vs Chucky (3) \n\n""", "grey", attrs=["bold"])))
+        
         if choice == 1:
             os.system("clear")
-            print("You have selected Player Vs Player \n")
-            self.player_2 = input("Please enter your challengers name: \n")
-            self.mode = "Player vs Player"
+            print(colored("You have selected Player Vs Player \n", "grey", attrs=["bold"]))
+            self.player_2 = input(colored("Please enter your challengers name: \n\n", "grey", attrs=["bold"]))
+            self.mode = colored("Player vs Player", "red", attrs=["bold"])
             self.versus_bot = False
             return self.pvp()
         
         elif choice == 2:
-            self.mode = "Player vs Drunk Uncle"
-            self.player_2 = "Drunk Uncle"
+            self.mode = (colored("Player vs Drunk Uncle", "red", attrs=["bold"]))
+            self.player_2 = (colored("Drunk Uncle", "grey", attrs=["bold"]))
             self.versus_bot = True
             return self.pvp()
         
         elif choice == 3:
-            self.mode = "Player vs Chucky"
+            self.mode = (colored("Player vs Chucky", "red", attrs=["bold"]))
             self.player_2 = "Chucky"
             self.versus_bot = True
             return self.pvp()
@@ -90,7 +91,7 @@ class GameController:
     
 
     def print_title(self):
-        print(f"  {self.mode}  \n\nNaughts and Crosses\n")
+        print(f"{self.mode}" + (colored("\n\nNaughts and Crosses\n", "grey", attrs=["bold"])))
         
     def print_scoreboard(self):
         if len(self.game_wins) > 0:
@@ -103,7 +104,7 @@ class GameController:
         prompt_count = 0
         if self.games_played > 0 and self.board.box == [" ", " ", " ", " ", " ", " ", " ", " ", " "]:
             os.system("clear")
-            print(f"{current_player} you go first this round")
+            print(current_player + colored(" you go first this round", "red", attrs=["bold"]))
             time.sleep(2)
         while is_valid == False:
             self.refresh_gamescreen()
