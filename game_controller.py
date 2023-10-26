@@ -1,9 +1,11 @@
 import os
 from game_board import Board
-from bots import Bot
 import time
 import random
-from colort import colorize, ForegroundColor as fc, Style
+from colorama import init
+init()
+from termcolor import colored
+
 class GameController:
     def __init__(self):
         self.board = Board()
@@ -18,7 +20,8 @@ class GameController:
     def turn_on_game(self):
         if self.player_1 ==  "":
             os.system("clear")
-            self.player_1 = input("Please enter your name: ")
+            color = input("Please enter your name: ")
+            self.player_1 = colored(color, "red", attrs=["bold"])
         return self.choose_mode() 
             
 
@@ -52,7 +55,6 @@ class GameController:
             print("     The previous answer was an incorrect choice \n\n")
             self.choose_mode()
     
-  
 
     def get_number(self, message):
             number = None
@@ -67,7 +69,6 @@ class GameController:
         self.board.restart_board()
         self.refresh_gamescreen()
         
-
 
     def refresh_gamescreen(self):
         os.system("clear")
@@ -120,7 +121,12 @@ class GameController:
                     time.sleep(.5)
                     countdown += 1
                 return
-            marker = "X" if current_player == self.player_1  else "O"
+            non_colored_marker = "X" if current_player == self.player_1  else "O"
+            if non_colored_marker == "X":
+                marker = colored(non_colored_marker, "red", attrs=["bold"])
+            else:
+                marker = non_colored_marker
+
             placement = input(f"\n {current_player} it's your turn, please choose 1-9: ")
             is_valid = self.board.is_valid_placement(placement)
             prompt_count += 1
@@ -161,7 +167,7 @@ class GameController:
                 if self.board.is_valid_placement(str(bot_placement)):
                     break
 
-            # ...do drunk uncle turn code in differenbt method for clean code
+
         elif self.player_2 == 'Chucky':
             chatter = ["Mwahahaha",  "It might be Game Over for you", "*cackles*", "*starts sharpenening your kitchen knife that went missing*", "*throws tomohawk and closely misses onlooker*"]
             self.bot_talk(chatter)
@@ -169,21 +175,20 @@ class GameController:
                 bot_placement = random.randint(1,9)
                 if self.board.is_valid_placement(str(bot_placement)):
                     break
-            # ...do chucky turn code in differenbt method for clean code
         
+
         self.board.update_boxes(bot_placement - 1, 'O')
         return self.validate_player_win(self.player_2, 'O')
 
     def on_tie_game(self): 
-        self.refresh_gamescreen()
+        os.system("clear")
         print ("\nTie game\n")
         self.on_game_finished()
 
     def on_player_win(self, winning_player): 
-        self.refresh_gamescreen()
+        os.system("clear")
         print(f"{winning_player} wins!\n")
         self.on_game_finished()
-
 
     def on_game_finished(self):
         self.games_played += 1
