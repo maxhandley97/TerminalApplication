@@ -1,7 +1,7 @@
 import os
-from game_board import Board
 import time
 import random
+from game_board import Board
 from colorama import init
 init()
 from termcolor import colored
@@ -9,7 +9,6 @@ from termcolor import colored
 class GameController:
     def __init__(self):
         self.board = Board()
-        # self.drunk_uncle = Bot(self)
         self.player_1 = ""
         self.player_2 = ""
         self.game_wins = []
@@ -20,37 +19,42 @@ class GameController:
     def turn_on_game(self):
         if self.player_1 ==  "":
             os.system("clear")
-            color = input(colored("Please enter your name: ", "grey", attrs=["bold"]))
+            color = input(colored("Welcome to Naughts and Crosses \n\n Please enter your name: ",
+                                   "grey", attrs=["bold"]))
             self.player_1 = colored(color, "red", attrs=["bold"])
         return self.choose_mode() 
             
 
     def choose_mode(self):
         os.system("clear")
-        choice = self.get_number(input(colored("""        Greetings """, "grey", attrs=["bold"]) + (self.player_1) + colored(""", let the games begin... \n\n To continue, choose from the following game modes:\n
-              Player vs Player (1) \n
-              Player vs Drunk Uncle (2) \n
-              Player vs Chucky (3) \n\n""", "grey", attrs=["bold"])))
-        
+        choice = self.get_number(input(
+                        colored("Greetings ", "grey", attrs=["bold"]) 
+                        + (self.player_1) + 
+                        colored(""", let the games begin... 
+                        \n\n To continue, choose from the following game modes:
+                        \n Player vs Player (1) 
+                        \n Player vs Drunk Uncle (2) 
+                        \n Player vs Chucky (3) \n\n""", "grey", attrs=["bold"])))
+
         if choice == 1:
             os.system("clear")
             print(colored("You have selected Player Vs Player \n", "grey", attrs=["bold"]))
             self.player_2 = input(colored("Please enter your challengers name: \n\n", "grey", attrs=["bold"]))
-            self.mode = colored("Player vs Player", "red", attrs=["bold"])
+            self.mode = colored("Player vs Player", "white", attrs=["bold"])
             self.versus_bot = False
-            return self.pvp()
+            return self.game()
         
         elif choice == 2:
-            self.mode = (colored("Player vs Drunk Uncle", "red", attrs=["bold"]))
-            self.player_2 = (colored("Drunk Uncle", "grey", attrs=["bold"]))
+            self.mode = "Player vs Drunk Uncle"
+            self.player_2 = "Drunk Uncle"
             self.versus_bot = True
-            return self.pvp()
+            return self.game()
         
         elif choice == 3:
-            self.mode = (colored("Player vs Chucky", "red", attrs=["bold"]))
+            self.mode = "Player vs Chucky"
             self.player_2 = "Chucky"
             self.versus_bot = True
-            return self.pvp()
+            return self.game()
         else:
             os.system("clear")
             print("     The previous answer was an incorrect choice \n\n")
@@ -91,20 +95,23 @@ class GameController:
     
 
     def print_title(self):
-        print(f"{self.mode}" + (colored("\n\nNaughts and Crosses\n", "grey", attrs=["bold"])))
+        print(f"{self.mode}" + (colored("\n\nNaughts and Crosses\n", "blue", attrs=["bold"])))
         
     def print_scoreboard(self):
         if len(self.game_wins) > 0:
-            print(f" {self.player_1}: {self.get_player_score(self.player_1)}  VS {self.player_2}: {self.get_player_score(self.player_2)} \n\n")
+            print(f"{self.get_player_score(self.player_1)} - {self.player_1} "
+                  f"VS {self.get_player_score(self.player_2)} - {self.player_2} \n\n")
     
 
     def initiate_and_validate_player_turn(self, current_player):
         is_valid = False
         placement = None
         prompt_count = 0
-        if self.games_played > 0 and self.board.box == [" ", " ", " ", " ", " ", " ", " ", " ", " "]:
+        if self.games_played > 0 and self.board.box == [" ", " ", " ", 
+                                                        " ", " ", " ", 
+                                                        " ", " ", " "]:
             os.system("clear")
-            print(current_player + colored(" you go first this round", "red", attrs=["bold"]))
+            print(f"{current_player} you go first this round")
             time.sleep(2)
         while is_valid == False:
             self.refresh_gamescreen()
@@ -113,12 +120,13 @@ class GameController:
             elif prompt_count == 2:
                 print(f"C'mon {current_player}, two in a row? Get it together")
             elif prompt_count == 3:
-                print(f"OK {current_player}, Last chance or you're opponent gets another crack")
+                print(f"OK {current_player}, Last chance or you're opponent gets to take your turn")
             elif prompt_count >= 4:
                 countdown = 0
                 while countdown < 4:
                     os.system("clear")
-                    print(f"You had three chances, you're sleeping on me!{'.' * countdown}")
+                    print("You had three chances, you're sleeping on me!" 
+                          + ('.' * countdown))
                     time.sleep(.5)
                     countdown += 1
                 return
@@ -161,23 +169,26 @@ class GameController:
         bot_placement = 0
         self.refresh_gamescreen()
         if self.player_2 == 'Drunk Uncle':
-            chatter = ["hmmmm...", "(Grunting)", "uuuuuuuggggghhhhh", "*scratches scrotom and sniffs fingers*", "hucks loogie and spits it", "hassle's onlooker", "starts rambling about hardships of his childhood", "starts a longwinded story that you've heard 6+ times"]
+            chatter = ["hmmmm...", "(Grunting)", "uuuuuuuggggghhhhh", 
+                       "*scratches below table and sniffs fingers*", 
+                       "hucks loogie and spits it", "hassle's onlooker", 
+                       "starts rambling about hardships of his childhood", 
+                       "starts a longwinded story that you've heard 6+ times", 
+                       "drunken rambles", "Is it my go already?"]
             self.bot_talk(chatter)
             while True:
                 bot_placement = random.randint(1,9)
                 if self.board.is_valid_placement(str(bot_placement)):
                     break
-
-
         elif self.player_2 == 'Chucky':
-            chatter = ["Mwahahaha",  "It might be Game Over for you", "*cackles*", "*starts sharpenening your kitchen knife that went missing*", "*throws tomohawk and closely misses onlooker*"]
+            chatter = ["Mwahahaha",  "It might be Game Over for you", "*cackles*", 
+                       "*starts sharpenening your kitchen knife*", "Game over is coming"
+                       "*throws tomohawk and closely misses onlooker*"]
             self.bot_talk(chatter)
             while True:
                 bot_placement = random.randint(1,9)
                 if self.board.is_valid_placement(str(bot_placement)):
                     break
-        
-
         self.board.update_boxes(bot_placement - 1, 'O')
         return self.validate_player_win(self.player_2, 'O')
 
@@ -203,9 +214,8 @@ class GameController:
             self.rematch()
             return self.choose_mode()
 
-    def pvp(self):
+    def game(self):
         ordered_players = [self.player_2, self.player_1] if self.games_played % 2 else [self.player_1, self.player_2]
-        # check for player 1 win
         while True: 
             for player in ordered_players:
                 players_wins = False
