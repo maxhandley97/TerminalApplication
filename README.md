@@ -1,4 +1,5 @@
 # Max Handley's Terminal application
+# Installation instructions are at the bottom of the document
  ## Links to referenced sources
 [PEP 8 Style Guide](https://peps.python.org/pep-0008/)  
 [Colorama](https://pypi.org/project/colorama/)  
@@ -76,3 +77,9 @@ This feature imports game controller and starts application
 ![Screenshot5](/docs/images/Screenshottesting2023-10-26.png)
 ![Screenshot6](/docs/images/ScreenshotDone2023-10-27.png)
 
+## Installation Instructions
+Python3 is a requirement:
+**To install game**  
+Type the following into two commands seperately in terminal:
+1. ./scripts/install.sh  
+2. ./scripts/start_game.sh
